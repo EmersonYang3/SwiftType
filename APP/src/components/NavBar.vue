@@ -16,7 +16,6 @@
 import router from '@/router'
 
 function routeToContributer() {
-  console.log('contributer')
   router.push({ name: 'ContributerView' })
 }
 
