@@ -7,10 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)
 ![DaisyUI](https://img.shields.io/badge/daisyui-5A0EF8?style=flat&logo=daisyui&logoColor=white)
 
-> A sleek, minimalist typing test application built with modern web technologies.
-
-## Current Features
-- **TBD**
+> A sleek, black minimalist typing test application built with modern web technologies.
 
 ## Tools
 - [Vue.js 3](https://vuejs.org/) - The Progressive JavaScript Framework
@@ -33,4 +30,4 @@
 ## Future Feature Plans
 - Send suggestions through Discord! Discord: 0x5f1fff9
 
-Love from Lucille
+Love from Lucille!
