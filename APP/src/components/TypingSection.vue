@@ -1,13 +1,38 @@
 <template>
-  <main class="flex justify-center items-center h-screen flex-col font-mono font-bold">
+  <main class="flex justify-center items-center h-full flex-col font-mono font-bold mt-[-68px]">
     <div class="rounded border-2 border-gray-300 p-4 w-6/12 h-2/4 flex flex-col">
       <section class="flex justify-center items-center mb-4">
         <h1 class="text-3xl">SwiftType</h1>
         <span></span>
       </section>
       <section class="flex-grow border border-gray-300 p-4 rounded overflow-y-auto">
-        <div class="flex flex-wrap gap-2">
-          <!--Words and Characters Will Be Displayed Here-->
+        <div class="flex flex-wrap text-2xl">
+          <div v-for="(word, wordIndex) in state.words" :key="wordIndex" class="mr-2">
+            <span
+              v-for="(char, charIndex) in word"
+              :key="charIndex"
+              class="p-[1px] transition-all duration-300"
+              :class="{
+                'border-2 border-gray-300': isCurrentChar(wordIndex, charIndex),
+                'border-2 border-transparent': !isCurrentChar(wordIndex, charIndex),
+                'text-green-500': isCorrectChar(wordIndex, charIndex),
+                'text-red-500': isIncorrectChar(wordIndex, charIndex),
+              }"
+            >
+              {{ char }}
+            </span>
+            <span
+              class="p-[1px] transition-all duration-300 w-6"
+              :class="{
+                'border-2 border-gray-300': isCurrentChar(wordIndex, word.length),
+                'border-2 border-transparent':
+                  !isCurrentChar(wordIndex, word.length) || state.IsCompleted,
+                'text-green-500': isCorrectChar(wordIndex, word.length),
+                'text-red-500': isIncorrectChar(wordIndex, word.length),
+              }"
+              > 
+            </span>
+          </div>
         </div>
       </section>
       <section class="flex justify-between text-xl mb-2 mt-2">
@@ -16,7 +41,11 @@
         <p class="flex-1 text-right">Accuracy: {{ state.Accuracy }}%</p>
       </section>
       <section>
-        <button class="btn btn-outline text-2xl w-full rounded" @click="toggleGame">
+        <button
+          class="btn btn-outline text-2xl w-full rounded bg-transparent border-2 border-white hover:scale-[1.015] focus:outline-none"
+          @click="toggleGame"
+          @keydown.prevent
+        >
           {{ state.GameInSession ? 'Restart' : 'Start' }}
         </button>
       </section>
@@ -27,13 +56,45 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 
-const state = reactive({
+interface State {
+  GameInSession: boolean
+  words: string[]
+  Time: number
+  WPM: number
+  Accuracy: number
+  Wrong: number
+  Correct: number
+  CurrentIndex: [number, number]
+  Ticking: boolean
+  CharStatus: { [key: string]: 'correct' | 'incorrect' | null }
+  IsCompleted: boolean
+  TotalAttempts: number
+}
+
+const state = reactive<State>({
   GameInSession: false,
   words: [],
   Time: 0,
   WPM: 0,
   Accuracy: 0,
+  Wrong: 0,
+  Correct: 0,
+  CurrentIndex: [0, 0],
+  Ticking: false,
+  CharStatus: {},
+  IsCompleted: false,
+  TotalAttempts: 0,
 })
+
+window.onkeydown = (e) => {
+  if (!/^[a-zA-Z ]$/.test(e.key) && e.key !== 'Backspace') return
+  if (!state.GameInSession && e.key !== ' ') {
+    toggleGame()
+  }
+  if (state.GameInSession && !state.IsCompleted) {
+    handleInput(e)
+  }
+}
 
 function toggleGame() {
   state.GameInSession = !state.GameInSession
@@ -46,12 +107,120 @@ function toggleGame() {
 
 function startGame() {
   state.GameInSession = true
+  state.CurrentIndex = [0, 0]
+  state.CharStatus = {}
+  state.IsCompleted = false
+  state.Time = 0
+  state.WPM = 0
+  state.Accuracy = 0
+  state.Wrong = 0
+  state.Correct = 0
+  state.Ticking = false
+  state.TotalAttempts = 0
 }
 
 function restartGame() {
   state.GameInSession = false
+  state.Ticking = false
   state.Time = 0
   state.WPM = 0
   state.Accuracy = 0
+  state.CurrentIndex = [0, 0]
+  state.Wrong = 0
+  state.Correct = 0
+  state.CharStatus = {}
+  state.IsCompleted = false
+  state.TotalAttempts = 0
+  retrieveWords(20)
 }
+
+function calculateStats() {
+  state.WPM = Math.round(state.Correct / 5 / (state.Time / 60))
+  state.Accuracy = Math.round((state.Correct / state.TotalAttempts) * 100)
+}
+
+async function startTimeTicker() {
+  while (state.GameInSession && !state.IsCompleted) {
+    await new Promise((resolve) => setTimeout(resolve, 10))
+    if (state.GameInSession && !state.IsCompleted) {
+      state.Time = Math.round((state.Time += 0.01) * 100) / 100
+      calculateStats()
+    }
+  }
+}
+
+function handleInput(input: KeyboardEvent) {
+  if (!state.Ticking) {
+    state.Ticking = true
+    startTimeTicker()
+  }
+
+  const [wordIndex, charIndex] = state.CurrentIndex
+  const currentWord = state.words[wordIndex]
+
+  if (input.key === 'Backspace') {
+    if (charIndex > 0) {
+      state.CurrentIndex = [wordIndex, charIndex - 1]
+      state.CharStatus[`${wordIndex}-${charIndex - 1}`] = null
+    } else if (wordIndex > 0) {
+      state.CurrentIndex = [wordIndex - 1, state.words[wordIndex - 1].length]
+      state.CharStatus[`${wordIndex - 1}-${state.words[wordIndex - 1].length}`] = null
+    }
+    return
+  }
+
+  state.TotalAttempts++
+
+  if (charIndex < currentWord.length) {
+    if (input.key === currentWord[charIndex]) {
+      state.Correct++
+      state.CharStatus[`${wordIndex}-${charIndex}`] = 'correct'
+    } else {
+      state.Wrong++
+      state.CharStatus[`${wordIndex}-${charIndex}`] = 'incorrect'
+    }
+    state.CurrentIndex = [wordIndex, charIndex + 1]
+  } else if (charIndex === currentWord.length && input.key === ' ') {
+    if (wordIndex < state.words.length - 1) {
+      state.CurrentIndex = [wordIndex + 1, 0]
+      state.Correct++
+      state.CharStatus[`${wordIndex}-${charIndex}`] = 'correct'
+    } else {
+      state.IsCompleted = true
+      state.GameInSession = false
+      state.CharStatus[`${wordIndex}-${charIndex}`] = 'correct'
+    }
+  } else {
+    state.Wrong++
+    state.CharStatus[`${wordIndex}-${charIndex}`] = 'incorrect'
+  }
+}
+
+function isCurrentChar(wordIndex: number, charIndex: number): boolean {
+  const [currentWordIndex, currentCharIndex] = state.CurrentIndex
+  if (wordIndex === currentWordIndex) {
+    if (charIndex === state.words[wordIndex].length) {
+      return currentCharIndex === charIndex
+    }
+    return currentCharIndex === charIndex
+  }
+  return false
+}
+
+function isCorrectChar(wordIndex: number, charIndex: number): boolean {
+  return state.CharStatus[`${wordIndex}-${charIndex}`] === 'correct'
+}
+
+function isIncorrectChar(wordIndex: number, charIndex: number): boolean {
+  return state.CharStatus[`${wordIndex}-${charIndex}`] === 'incorrect'
+}
+
+async function retrieveWords(numberOfWords: number) {
+  const URL = `https://random-word-api.herokuapp.com/word?number=${numberOfWords}`
+  const response = await fetch(URL)
+  const data = await response.json()
+  state.words = data.map((word: string) => word.split(''))
+}
+
+retrieveWords(20)
 </script>

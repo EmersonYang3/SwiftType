@@ -9,9 +9,8 @@
 
 > A sleek, minimalist typing test application built with modern web technologies.
 
-
 ## Current Features
-- TBD
+- **TBD**
 
 ## Tools
 - [Vue.js 3](https://vuejs.org/) - The Progressive JavaScript Framework
@@ -21,5 +20,17 @@
 - [Daisy UI](https://daisyui.com/) - Tailwind CSS component library
 
 ## 📦 Releases
-### v1.0.0 - Initial Release
-- Features TBD
+
+### v1.0.0 - 1/19/25
+- **Generate 20 random words**
+- **See time in real time**
+- **See words per minute in real time**
+- **See accuracy in real time**
+- **Delete characters**
+- **Characters display color based on if the character was typed correctly**
+- **Contributors page**
+
+## Future Feature Plans
+- Send suggestions through slack! SlackID: LucilleLovesMelodie
+
+Love from Lucille
