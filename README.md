@@ -1,0 +1,1 @@
+# SwiftType
