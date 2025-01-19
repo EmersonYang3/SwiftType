@@ -31,6 +31,6 @@
 - **Contributors page**
 
 ## Future Feature Plans
-- Send suggestions through slack! SlackID: LucilleLovesMelodie
+- Send suggestions through Discord! Discord: 0x5f1fff9
 
 Love from Lucille
