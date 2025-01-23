@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://media.discordapp.net/attachments/1281382118651461725/1330748718932295830/image.png?ex=678f1bd2&is=678dca52&hm=53f2d6e7b0aab618068943dd35bbd778fe8f6997ed834af0ad1432e60d0b7ba0&=&format=webp&quality=lossless" alt="SwiftType Banner" width="100%" style="max-width: 800px"/>
+<img src="Banner.png" alt="SwiftType Banner" width="100%" style="max-width: 800px"/>
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)](https://github.com/EmersonYang3/SwiftType)
 [![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
