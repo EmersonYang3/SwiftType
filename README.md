@@ -2,7 +2,7 @@
 
 <img src="Banner.png" alt="SwiftType Banner" width="100%" style="max-width: 800px"/>
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)](https://github.com/EmersonYang3/SwiftType)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg?cacheSeconds=2592000)](https://github.com/EmersonYang3/SwiftType)
 [![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=flat&logo=vuedotjs&logoColor=%234FC08D)](https://vuejs.org/)
 [![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -14,8 +14,9 @@
 </div>
 
 ## ✨ Features
-
-- 📝 Generate 20 random words for typing practice
+- 📝 **Choose a preset word count or set a custom word count!** [NEW!]
+- 🎯 **Autoscrolls to the current word you have selected (works on 100% zoom)!** [NEW!]
+- - 📝 Generate 20 random words for typing practice
 - ⏱️ Real-time statistics tracking:
   - Elapsed time
   - Words per minute (WPM)
@@ -51,6 +52,12 @@ npm run dev
 - **[Daisy UI](https://daisyui.com/)** - Tailwind CSS Component Library
 
 ## 📦 Releases
+### v1.2.0 - January 25, 2025
+- 🚀 New Autoscroll Feature! (Apologies for not including this in the initial release)
+  - Please set zoom to 100% for this feature to work as intended.
+- 📝 New custom word count feature!
+  - Quick Select a preset word count or type in your own desired word count!
+  - Max of 1000 words (Avoid spamming this, as it might crash your PC)
 
 ### v1.0.0 - January 19, 2025
 - Initial release with core typing test functionality
@@ -68,6 +75,5 @@ Have a suggestion? Message Me:
 - Lucille - _Project Creator_
 
 ## ☕ Special Thanks
-Thanks for checking out SwiftType!
-
+Thanks for checking out Swift
 ---
