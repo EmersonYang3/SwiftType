@@ -17,7 +17,7 @@ onMounted(() => {
     <transition name="fade">
       <div v-if="Splash" class="fixed inset-0 flex items-center justify-center bg-black z-50">
         <img
-          src="https://media.discordapp.net/attachments/1281382118651461725/1330681645484740710/SwiftType_1.png?ex=678edd5b&is=678d8bdb&hm=f8837f6041f1b666697855bdd0b3caa7360341dec1511091a2c3a0305b79bee0&=&format=webp&quality=lossless&width=1244&height=700"
+          src="../../Banner.png"
           alt="SwiftType Logo"
           class="w-1/2 h-auto pulsate"
           draggable="false"
