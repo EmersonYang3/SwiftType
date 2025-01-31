@@ -290,7 +290,7 @@ async function retrieveWords() {
     selectedWordCount.value === 'custom' ? customWordCount.value : selectedWordCount.value
   if (wordCount === null || wordCount < 1) return
 
-  const URL = `https://random-word-api.herokuapp.com/word?number=${wordCount}`
+  const URL = `https://random-word-api.vercel.app/api?words=${wordCount}`
   const response = await fetch(URL)
   const data = await response.json()
   state.words = data.map((word: string) => word.split(''))
